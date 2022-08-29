@@ -8,13 +8,11 @@ import com.ikem.drone_delivery.exception.ResourceNotFoundException;
 import com.ikem.drone_delivery.repository.DroneRepository;
 import com.ikem.drone_delivery.service.DroneService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -33,10 +31,19 @@ public class DroneServiceImpl implements DroneService {
     }
 
     @Override
-    public Drone loadDroneWithMedication(String droneSerialNo, List<MedicationDto> medicationDtos) {
+    public DroneDto loadDroneWithMedication(String droneSerialNo, List<MedicationDto> medicationDtos) {
         Drone drone = droneRepository.findBySerialNo(droneSerialNo).orElseThrow(
                 () -> new ResourceNotFoundException("Drone", "id", droneSerialNo));
 
+        double weightsOfMedications = medicationDtos.stream().mapToDouble(MedicationDto::getWeight).sum();
+        if (weightsOfMedications < drone.getWeightLimit()){
+
+        }
+        return null;
+    }
+
+    @Override
+    public List<DroneDto> getAvailableDronesForLoading() {
         return null;
     }
 

@@ -1,15 +1,19 @@
 package com.ikem.drone_delivery.entity;
 
-import org.springframework.data.annotation.Id;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
+@Getter
+@Setter
+@Entity
 @Table(name = "medications")
 public class Medication {
 
-    @Id
+    @javax.persistence.Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long medId;
+    private Long Id;
 
     private String name;
     private Double weight;
@@ -17,6 +21,6 @@ public class Medication {
     private String imagePath;
 
     @ManyToOne
-    @JoinColumn(name = "serial_no")
+    @JoinColumn(name = "serial_no", nullable = false)
     private Drone drone;
 }

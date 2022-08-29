@@ -10,5 +10,7 @@ public interface DroneService {
 
     void registerDrone(DroneDto drone);
 
-    Drone loadDroneWithMedication(String droneSerialNo, List<MedicationDto> medicationDtos);
+    DroneDto loadDroneWithMedication(String droneSerialNo, List<MedicationDto> medicationDtos);
+
+    List<DroneDto> getAvailableDronesForLoading();
 }

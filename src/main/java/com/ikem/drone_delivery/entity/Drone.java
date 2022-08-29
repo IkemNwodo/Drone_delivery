@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Setter
 @Getter
@@ -21,5 +23,8 @@ public class Drone {
     private Double batteryCapacity;
     @Enumerated(EnumType.ORDINAL)
     private DroneState state;
+
+    @OneToMany(mappedBy = "drone",cascade = CascadeType.ALL)
+    private List<Medication> medications = new ArrayList<>();
 
 }
