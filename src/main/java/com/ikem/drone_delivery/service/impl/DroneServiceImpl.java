@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -32,7 +33,7 @@ public class DroneServiceImpl implements DroneService {
 
     @Override
     public void registerDrone(DroneDto drone) {
-        if (droneRepository.existsBySerialNo(drone.getSerialNo())){
+        if (droneRepository.existsBySerialNo(drone.getSerialNo())) {
             log.info("Drone {} already exists", drone);
             throw new DroneException(HttpStatus.BAD_REQUEST, "Drone already exists");
         }
@@ -42,10 +43,10 @@ public class DroneServiceImpl implements DroneService {
     @Override
     public void loadDroneWithMedication(String droneSerialNo, List<MedicationDto> medicationDtos) {
         Drone drone = droneRepository.findBySerialNo(droneSerialNo).orElseThrow(
-                () -> new ResourceNotFoundException("Drone", "id", droneSerialNo));
+                () -> new ResourceNotFoundException("Drone", "serial No.", droneSerialNo));
 
         double weightsOfMedications = medicationDtos.stream().mapToDouble(MedicationDto::getWeight).sum();
-        if (weightsOfMedications < drone.getWeightLimit()){
+        if (weightsOfMedications < drone.getWeightLimit()) {
             List<Medication> medications = medicationDtos.stream().map(this::mapToMedication).toList();
             drone.setMedications(medications);
             drone.setWeightLimit(weightsOfMedications);
@@ -63,7 +64,7 @@ public class DroneServiceImpl implements DroneService {
         try {
             availableDrones = droneRepository.findDronesByStateEquals(DroneState.IDLE, pageable);
 
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("Error occurred while fetching");
         }
 
@@ -86,7 +87,7 @@ public class DroneServiceImpl implements DroneService {
         try {
             drones = droneRepository.findAll(pageable);
 
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("Error occurred while fetching");
         }
 
@@ -101,20 +102,34 @@ public class DroneServiceImpl implements DroneService {
                 .build();
     }
 
+    @Override
+    public String getBatteryLevel(String droneSerialNo) {
 
-    public DroneDto mapToDroneDTO(Drone drone){
+        String batteryLevel = null;
+        try {
+            Drone drone = droneRepository.findBySerialNo(droneSerialNo).orElseThrow(
+                    () -> new ResourceNotFoundException("Drone", "serial No.", droneSerialNo));
+            batteryLevel = String.valueOf(drone.getBatteryCapacity());
+        } catch (Exception e){
+            log.error("Error occurred while fetching");
+        }
+
+        return String.format("Battery level for %1s is %2s", droneSerialNo, batteryLevel);
+    }
+
+    public DroneDto mapToDroneDTO(Drone drone) {
         return mapper.map(drone, DroneDto.class);
     }
 
-    public Drone mapToDrone(DroneDto dto){
+    public Drone mapToDrone(DroneDto dto) {
         return mapper.map(dto, Drone.class);
     }
 
-    public MedicationDto mapToMedicationDTO(Medication medication){
+    public MedicationDto mapToMedicationDTO(Medication medication) {
         return mapper.map(medication, MedicationDto.class);
     }
 
-    public Medication mapToMedication(MedicationDto dto){
+    public Medication mapToMedication(MedicationDto dto) {
         return mapper.map(dto, Medication.class);
     }
 }

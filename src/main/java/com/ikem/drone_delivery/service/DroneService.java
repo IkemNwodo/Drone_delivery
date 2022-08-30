@@ -16,4 +16,6 @@ public interface DroneService {
     DroneResponse getAvailableDronesForLoading(int pageNo, int pageSize);
 
     DroneResponse getAllDrones(int pageNo, int pageSize);
+
+    String getBatteryLevel(String serialNo);
 }
