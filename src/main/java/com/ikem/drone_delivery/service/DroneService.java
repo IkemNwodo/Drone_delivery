@@ -1,6 +1,7 @@
 package com.ikem.drone_delivery.service;
 
 import com.ikem.drone_delivery.dto.DroneDto;
+import com.ikem.drone_delivery.dto.DroneResponse;
 import com.ikem.drone_delivery.dto.MedicationDto;
 import com.ikem.drone_delivery.entity.Drone;
 
@@ -10,7 +11,9 @@ public interface DroneService {
 
     void registerDrone(DroneDto drone);
 
-    DroneDto loadDroneWithMedication(String droneSerialNo, List<MedicationDto> medicationDtos);
+    void loadDroneWithMedication(String droneSerialNo, List<MedicationDto> medicationDtos);
 
-    List<DroneDto> getAvailableDronesForLoading();
+    DroneResponse getAvailableDronesForLoading(int pageNo, int pageSize);
+
+    DroneResponse getAllDrones(int pageNo, int pageSize);
 }
