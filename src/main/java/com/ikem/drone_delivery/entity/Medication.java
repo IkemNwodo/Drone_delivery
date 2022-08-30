@@ -13,7 +13,7 @@ public class Medication {
 
     @javax.persistence.Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long Id;
+    private Integer Id;
 
     private String name;
     private Double weight;

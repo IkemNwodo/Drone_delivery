@@ -21,7 +21,7 @@ public class Drone {
     private DroneModel model;
     private Double weightLimit;
     private Double batteryCapacity;
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private DroneState state;
 
     @OneToMany(mappedBy = "drone",cascade = CascadeType.ALL)

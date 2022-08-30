@@ -1,9 +1,5 @@
 package com.ikem.drone_delivery.util;
 
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-
-
 public enum DroneModel {
     LW("Lightweight"),
     MW("Middleweight"),
