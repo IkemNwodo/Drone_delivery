@@ -13,20 +13,22 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.Size;
 import java.util.List;
 
+import static com.ikem.drone_delivery.util.Endpoints.*;
+
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/drones")
+@RequestMapping(BASE_URL)
 public class DroneController {
 
     private DroneService droneService;
 
-    @PostMapping("/register")
+    @PostMapping(REGISTER_DRONE)
     public ResponseEntity<String> registerDrone(@RequestBody DroneDto drone){
         droneService.registerDrone(drone);
         return new ResponseEntity<>("Drone created successfully", HttpStatus.CREATED);
     }
 
-    @PostMapping("/load/{serialNo}")
+    @PostMapping(LOAD_DRONE_WITH_MEDICATIONS)
     public ResponseEntity<String> loadDroneWithMedication(
             @PathVariable @Size(max = 100, message = "Serial number must be 100 characters max.") String serialNo,
             @RequestBody List<MedicationDto> medications
@@ -34,7 +36,7 @@ public class DroneController {
         droneService.loadDroneWithMedication(serialNo, medications);
         return ResponseEntity.ok("Drone loaded successfully");
     }
-    @GetMapping("/available")
+    @GetMapping(AVAILABLE_DRONES)
     public ResponseEntity<DroneResponse> getAvailableDrones(
             @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
             @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize
@@ -54,7 +56,7 @@ public class DroneController {
         );
     }
 
-    @GetMapping("/battery-level/{serialNo}")
+    @GetMapping(GET_BATTERY_LEVEL)
     public ResponseEntity<String> getBatteryLevel(
             @PathVariable @Size(max = 100, message = "Serial number must be 100 characters max.") String serialNo
             ){

@@ -12,14 +12,17 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.constraints.Size;
 import java.util.List;
 
+import static com.ikem.drone_delivery.util.Endpoints.GET_MEDICATIONS;
+import static com.ikem.drone_delivery.util.Endpoints.MEDICATION_BASE_URL;
+
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping(MEDICATION_BASE_URL)
 public class MedicationController {
 
     private MedicationService medicationService;
 
-    @GetMapping("/drones/{droneSerialNo}/medications")
+    @GetMapping(GET_MEDICATIONS)
     public ResponseEntity<List<MedicationDto>> getMedications(
             @PathVariable @Size(max = 100, message = "Serial number must be 100 characters max.") String droneSerialNo
     ) {
