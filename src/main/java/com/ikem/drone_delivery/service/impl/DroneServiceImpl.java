@@ -9,6 +9,7 @@ import com.ikem.drone_delivery.exception.DroneException;
 import com.ikem.drone_delivery.exception.ResourceNotFoundException;
 import com.ikem.drone_delivery.repository.DroneRepository;
 import com.ikem.drone_delivery.service.DroneService;
+import com.ikem.drone_delivery.util.AppConstants;
 import com.ikem.drone_delivery.util.DroneState;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,11 +34,16 @@ public class DroneServiceImpl implements DroneService {
 
     @Override
     public void registerDrone(DroneDto drone) {
+
         if (droneRepository.existsBySerialNo(drone.getSerialNo())) {
             log.info("Drone {} already exists", drone);
             throw new DroneException(HttpStatus.BAD_REQUEST, "Drone already exists");
         }
-        droneRepository.save(mapToDrone(drone));
+        if (droneRepository.count() == AppConstants.DRONES_IN_FLEET){
+            log.error("You can't add more than 10 drone in this fleet.");
+            throw new DroneException(HttpStatus.EXPECTATION_FAILED, "You can't add more than 10 drone in this fleet.");
+        }
+            droneRepository.save(mapToDrone(drone));
     }
 
     @Override
