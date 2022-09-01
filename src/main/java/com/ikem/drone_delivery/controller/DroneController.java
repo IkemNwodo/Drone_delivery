@@ -17,7 +17,7 @@ import static com.ikem.drone_delivery.util.Endpoints.*;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping(BASE_URL)
+@RequestMapping(DRONE_BASE_URL)
 public class DroneController {
 
     private DroneService droneService;
