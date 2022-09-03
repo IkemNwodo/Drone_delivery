@@ -21,6 +21,6 @@ public class Medication {
     private String imagePath;
 
     @ManyToOne
-    @JoinColumn(name = "serial_no", nullable = false)
+    @JoinColumn(name = "serialNo", nullable = false)
     private Drone drone;
 }

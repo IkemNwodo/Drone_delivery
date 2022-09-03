@@ -1,5 +1,5 @@
-INSERT INTO drones(`serial_no`, `model`) VALUES('ABC001', 'Lightweight');
-INSERT INTO drones(`serial_no`, `model`) VALUES('ABC002', 'Heavyweight');
-INSERT INTO drones(`serial_no`, `model`) VALUES('ABC003', 'Lightweight');
-INSERT INTO drones(`serial_no`, `model`) VALUES('ABC004', 'Middleweight');
-INSERT INTO drones(`serial_no`, `model`) VALUES('ABC005', 'Lightweight');
+INSERT INTO drones(serialNo) VALUES('ABC001');
+INSERT INTO drones(serialNo) VALUES('ABC002');
+INSERT INTO drones(serialNo) VALUES('ABC003');
+INSERT INTO drones(serialNo) VALUES('ABC004');
+INSERT INTO drones(serialNo) VALUES('ABC005');

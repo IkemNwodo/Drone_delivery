@@ -70,6 +70,7 @@ public class DroneServiceImpl implements DroneService {
         try {
             availableDrones = droneRepository.findDronesByStateEquals(DroneState.IDLE, pageable);
 
+            log.info("DroneServiceImpl: {}", availableDrones.getContent());
         } catch (Exception e) {
             log.error("Error occurred while fetching");
         }

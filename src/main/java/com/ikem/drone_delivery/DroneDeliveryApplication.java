@@ -1,5 +1,6 @@
 package com.ikem.drone_delivery;
 
+import com.ikem.drone_delivery.util.HibernateUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
