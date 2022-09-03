@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,14 +14,15 @@ import java.util.List;
 @Getter
 @Entity
 @Table(name = "drones")
-public class Drone {
+public class Drone implements Serializable {
 
     @Id
+    @Column(name = "serialNo")
     private String serialNo;
     @Enumerated(EnumType.STRING)
     private DroneModel model;
     private Double weightLimit;
-    private Double batteryCapacity;
+    private Integer batteryCapacity;
     @Enumerated(EnumType.STRING)
     private DroneState state;
 
