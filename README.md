@@ -8,3 +8,6 @@ _Medication items delivery service with a fleet of 10 drones._
 - Model Mapper 3.1.0
 - Apache Maven 3.8.6
 - Lombok 1.18.24
+
+## How to use:
+- All endpoints can be accessed by visiting - http://localhost:8080/swagger-ui/
