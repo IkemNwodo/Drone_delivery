@@ -14,6 +14,7 @@ import com.ikem.drone_delivery.util.DroneState;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,12 +26,17 @@ import java.util.Optional;
 
 @Slf4j
 @Service
-@AllArgsConstructor
 public class DroneServiceImpl implements DroneService {
+
 
     private DroneRepository droneRepository;
 
     private ModelMapper mapper;
+
+    public DroneServiceImpl(DroneRepository droneRepository, ModelMapper mapper) {
+        this.droneRepository = droneRepository;
+        this.mapper = mapper;
+    }
 
     @Override
     public void registerDrone(DroneDto drone) {
