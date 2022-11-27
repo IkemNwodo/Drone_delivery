@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,7 +20,9 @@ import java.util.List;
 @Slf4j
 public class BatteryHistoryServiceImpl implements BatteryHistoryService {
 
+    @Autowired
     private BatteryHistoryRepository batteryHistoryRepository;
+    @Autowired
     private ModelMapper mapper;
 
     @Override

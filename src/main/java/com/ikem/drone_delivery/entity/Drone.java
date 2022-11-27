@@ -2,8 +2,7 @@ package com.ikem.drone_delivery.entity;
 
 import com.ikem.drone_delivery.util.DroneModel;
 import com.ikem.drone_delivery.util.DroneState;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,6 +12,7 @@ import java.util.List;
 @Setter
 @Getter
 @Entity
+@EqualsAndHashCode
 @Table(name = "drones")
 public class Drone implements Serializable {
 
@@ -28,5 +28,4 @@ public class Drone implements Serializable {
 
     @OneToMany(mappedBy = "drone",cascade = CascadeType.ALL)
     private List<Medication> medications = new ArrayList<>();
-
 }

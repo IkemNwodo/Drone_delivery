@@ -1,5 +1,6 @@
 package com.ikem.drone_delivery.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.DecimalMax;
@@ -7,6 +8,7 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Pattern;
 
 @Data
+@Builder
 public class MedicationDto {
 
     @Pattern(regexp = "^[\\w\\-]*$", message = "Invalid medication name! This allows only letters, numbers, ‘-‘, ‘_’")

@@ -2,6 +2,7 @@ package com.ikem.drone_delivery.dto;
 
 import com.ikem.drone_delivery.util.DroneModel;
 import com.ikem.drone_delivery.util.DroneState;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@Builder
 public class DroneDto {
 
     @NotEmpty
