@@ -2,95 +2,60 @@ package com.ikem.drone_delivery.service;
 
 import com.ikem.drone_delivery.dto.BatteryHistoryDto;
 import com.ikem.drone_delivery.dto.DroneDto;
-import com.ikem.drone_delivery.entity.BatteryHistory;
 import com.ikem.drone_delivery.entity.Drone;
 import com.ikem.drone_delivery.exception.ResourceNotFoundException;
 import com.ikem.drone_delivery.repository.BatteryHistoryRepository;
-import com.ikem.drone_delivery.service.impl.BatteryHistoryServiceImpl;
-import org.junit.Before;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class)
+@Transactional
+@AutoConfigureTestEntityManager
+@AutoConfigureTestDatabase
 @SpringBootTest
 class BatteryHistoryServiceTest {
 
-    /*@TestConfiguration
-    static class BatteryHistoryServiceImplTestContextConfiguration {
-        @Bean("batteryHistoryServiceBean")
-        public BatteryHistoryService batteryHistoryService(){
-            return new BatteryHistoryServiceImpl();
-        }
-
-        @Bean("modelMapperBean")
-        public ModelMapper modelMapper(){
-            return new ModelMapper();
-        }
-    }
-*/
-    @MockBean
+    @Autowired
     private BatteryHistoryRepository batteryHistoryRepository;
 
+    @Autowired
+    private TestEntityManager entityManager;
     @Autowired
     private BatteryHistoryService batteryHistoryService;
 
     @Autowired
     private ModelMapper mapper;
 
-
-   /* @Before
-    public void setUp() {
-        DroneDto drone = DroneDto.builder()
-                .serialNo("ABC003")
-                .build();
-
-        BatteryHistory batteryHistory = new BatteryHistory(90, mapper.map(drone, Drone.class));
-        when(batteryHistoryRepository.findByDrone_SerialNo(drone.getSerialNo()))
-                .thenReturn(List.of(batteryHistory));
-    }
-*/
     @Test
     public void getBatteryHistoriesForDrone() {
-        //BatteryHistory batteryHistory = new BatteryHistory(90, mapper.map(drone, Drone.class));
 
         DroneDto drone = DroneDto.builder()
-                .serialNo("ABC003")
+                .serialNo("ABC008")
                 .build();
 
-        BatteryHistory batteryHistory = new BatteryHistory(90, mapper.map(drone, Drone.class));
-        when(batteryHistoryRepository.findByDrone_SerialNo(drone.getSerialNo()))
-                .thenReturn(List.of(batteryHistory));
+        entityManager.persist(mapper.map(drone, Drone.class));
+        entityManager.flush();
 
-        List<BatteryHistoryDto> result = batteryHistoryService.getBatteryHistoriesForDrone("ABC003");
+        List<BatteryHistoryDto> result = batteryHistoryService.getBatteryHistoriesForDrone("ABC008");
 
-        assertThat(1).isEqualTo(result.size());
+        assertThat(0).isEqualTo(result.size());
     }
 
     @Test
     void throw_when_drone_is_not_found(){
-        given(batteryHistoryRepository.findByDrone_SerialNo("ABC003"))
-                .willReturn(null);
-
-        assertThatThrownBy(() -> batteryHistoryService.getBatteryHistoriesForDrone("ABC003"))
+        batteryHistoryService.getBatteryHistoriesForDrone(null);
+        assertThatThrownBy(() -> batteryHistoryService.getBatteryHistoriesForDrone(null))
                 .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessageContaining("Battery history for drone not found with Serial No : 'ABC003'");
+                .hasMessageContaining("Battery history for drone not found with Serial No : 'null'");
     }
 }

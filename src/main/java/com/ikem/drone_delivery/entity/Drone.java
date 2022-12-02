@@ -6,13 +6,11 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Setter
 @Getter
 @Entity
-@EqualsAndHashCode
 @Table(name = "drones")
 public class Drone implements Serializable {
 
@@ -27,5 +25,6 @@ public class Drone implements Serializable {
     private DroneState state;
 
     @OneToMany(mappedBy = "drone",cascade = CascadeType.ALL)
-    private List<Medication> medications = new ArrayList<>();
+    private Set<Medication> medications = new HashSet<>();
+
 }
