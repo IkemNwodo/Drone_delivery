@@ -11,10 +11,8 @@ import com.ikem.drone_delivery.repository.DroneRepository;
 import com.ikem.drone_delivery.service.DroneService;
 import com.ikem.drone_delivery.util.AppConstants;
 import com.ikem.drone_delivery.util.DroneState;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +20,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -59,7 +58,8 @@ public class DroneServiceImpl implements DroneService {
 
         double weightsOfMedications = medicationDtos.stream().mapToDouble(MedicationDto::getWeight).sum();
         if (weightsOfMedications < drone.getWeightLimit()) {
-            List<Medication> medications = medicationDtos.stream().map(this::mapToMedication).toList();
+            Set<Medication> medications = medicationDtos.stream().map(this::mapToMedication).collect(Collectors.toSet());
+            medications.forEach( medication -> medication.setDrone(drone));
             drone.setMedications(medications);
             drone.setWeightLimit(weightsOfMedications);
             droneRepository.save(drone);
@@ -83,7 +83,7 @@ public class DroneServiceImpl implements DroneService {
 
         return DroneResponse.builder()
                 .isEmpty(availableDrones.isEmpty())
-                .content(availableDrones.stream().map(this::mapToDroneDTO).toList())
+                .content(availableDrones.stream().map(this::mapToDroneDTO).collect(Collectors.toSet()))
                 .pageNo(availableDrones.getNumber())
                 .pageSize(availableDrones.getSize())
                 .totalElements(availableDrones.getTotalElements())
@@ -106,7 +106,7 @@ public class DroneServiceImpl implements DroneService {
 
         return DroneResponse.builder()
                 .isEmpty(drones.isEmpty())
-                .content(drones.stream().map(this::mapToDroneDTO).toList())
+                .content(drones.stream().map(this::mapToDroneDTO).collect(Collectors.toSet()))
                 .pageNo(drones.getNumber())
                 .pageSize(drones.getSize())
                 .totalElements(drones.getTotalElements())
@@ -127,7 +127,7 @@ public class DroneServiceImpl implements DroneService {
             log.error("Error occurred while fetching");
         }
 
-        return String.format("Battery level for %1s is %2s", droneSerialNo, batteryLevel);
+        return batteryLevel;
     }
 
     public DroneDto mapToDroneDTO(Drone drone) {

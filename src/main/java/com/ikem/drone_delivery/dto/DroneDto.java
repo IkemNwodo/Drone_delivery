@@ -2,17 +2,17 @@ package com.ikem.drone_delivery.dto;
 
 import com.ikem.drone_delivery.util.DroneModel;
 import com.ikem.drone_delivery.util.DroneState;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class DroneDto {
 
     @NotEmpty
@@ -27,5 +27,5 @@ public class DroneDto {
 
     private DroneState state;
 
-    private List<MedicationDto> medications;
+    private Set<MedicationDto> medications;
 }
